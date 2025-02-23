@@ -6,7 +6,7 @@ import moe.tachyon.console.Console
 import moe.tachyon.console.SimpleAnsiColor
 import moe.tachyon.console.SimpleAnsiColor.Companion.CYAN
 import moe.tachyon.console.SimpleAnsiColor.Companion.PURPLE
-import moe.tachyon.logger.SubQuizLogger.safe
+import moe.tachyon.logger.MyDeepSeekLogger.safe
 import moe.tachyon.workDir
 import kotlinx.datetime.Clock
 import kotlinx.datetime.toKotlinInstant
@@ -31,7 +31,7 @@ import kotlin.time.Duration
  * logger系统
  */
 @Suppress("MemberVisibilityCanBePrivate")
-object SubQuizLogger
+object MyDeepSeekLogger
 {
     val globalLogger = LoggerUtil(Logger.getLogger(""))
     fun getLogger(name: String): LoggerUtil = LoggerUtil(Logger.getLogger(name))
@@ -49,7 +49,7 @@ object SubQuizLogger
 
     @CallerSensitive
     @OptIn(KallerSensitive::class)
-    fun getLogger(): LoggerUtil = getCallerClass()?.let(SubQuizLogger::getLogger) ?: globalLogger
+    fun getLogger(): LoggerUtil = getCallerClass()?.let(MyDeepSeekLogger::getLogger) ?: globalLogger
     internal val nativeOut: PrintStream = System.out
     internal val nativeErr: PrintStream = System.err
 
@@ -144,7 +144,7 @@ object SubQuizLogger
 
                     }
                     .findFirst()
-                    .map(SubQuizLogger::getLogger)
+                    .map(MyDeepSeekLogger::getLogger)
                     .getOrDefault(getLogger()).logger.log(level, str)
             }
             else synchronized(arrayOutputStream) { arrayOutputStream.write(b) }
@@ -178,7 +178,7 @@ object ToConsoleHandler: Handler()
                 val head = if (loggerConfig.showLoggerName) String.format(
                     "%s[%s]%s[%s]%s[%s]%s",
                     PURPLE.bright(),
-                    SubQuizLogger.loggerDateFormat.format(record.millis),
+                    MyDeepSeekLogger.loggerDateFormat.format(record.millis),
                     CYAN.bright(),
                     record.loggerName,
                     ansiStyle,
@@ -188,7 +188,7 @@ object ToConsoleHandler: Handler()
                 else String.format(
                     "%s[%s]%s[%s]%s",
                     PURPLE.bright(),
-                    SubQuizLogger.loggerDateFormat.format(record.millis),
+                    MyDeepSeekLogger.loggerDateFormat.format(record.millis),
                     ansiStyle,
                     level.name,
                     RESET,
@@ -260,13 +260,13 @@ object ToFileHandler: Handler()
                 val level = record.level
                 val head = if (loggerConfig.showLoggerName) String.format(
                     "[%s][%s][%s]",
-                    SubQuizLogger.loggerDateFormat.format(record.millis),
+                    MyDeepSeekLogger.loggerDateFormat.format(record.millis),
                     record.loggerName,
                     level.name
                 )
                 else String.format(
                     "[%s][%s]",
-                    SubQuizLogger.loggerDateFormat.format(record.millis),
+                    MyDeepSeekLogger.loggerDateFormat.format(record.millis),
                     level.name
                 )
                 return messages.joinToString("\n") { "$head $it" }

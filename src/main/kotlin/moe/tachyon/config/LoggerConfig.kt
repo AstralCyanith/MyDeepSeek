@@ -3,7 +3,7 @@ package moe.tachyon.config
 import moe.tachyon.console.ColorDisplayMode
 import moe.tachyon.console.Console
 import moe.tachyon.console.EffectDisplayMode
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.logger.ToFileHandler
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -47,7 +47,7 @@ var loggerConfig: LoggerConfig by config(
     "logger.yml",
     LoggerConfig(listOf(), true, "INFO", false, ColorDisplayMode.RGB, true, 7.days),
     { _, new ->
-        SubQuizLogger.globalLogger.logger.setLevel(new.level)
+        MyDeepSeekLogger.globalLogger.logger.setLevel(new.level)
         Console.ansiEffectMode =
             if (new.effect) EffectDisplayMode.ON
             else EffectDisplayMode.OFF

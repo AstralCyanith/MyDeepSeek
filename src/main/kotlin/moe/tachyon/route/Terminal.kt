@@ -7,7 +7,7 @@ import moe.tachyon.config.loggerConfig
 import moe.tachyon.console.command.CommandSet
 import moe.tachyon.dataClass.Permission
 import moe.tachyon.dataClass.UserFull
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.logger.ToConsoleHandler
 import moe.tachyon.route.terminal.Type.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.route
@@ -26,7 +26,7 @@ import java.net.URL
 import java.util.logging.Handler
 import java.util.logging.LogRecord
 
-private val logger = SubQuizLogger.getLogger()
+private val logger = MyDeepSeekLogger.getLogger()
 
 private val loggerFlow = MutableSharedFlow<Packet<String>>(
     replay = 100,
@@ -37,7 +37,7 @@ private val sharedFlow = loggerFlow.asSharedFlow()
 
 private val init: Unit by lazy()
 {
-    SubQuizLogger.globalLogger.logger.addHandler(object: Handler()
+    MyDeepSeekLogger.globalLogger.logger.addHandler(object: Handler()
     {
         init
         {

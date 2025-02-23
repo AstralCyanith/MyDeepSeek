@@ -2,7 +2,7 @@ package moe.tachyon.console
 
 import moe.tachyon.console.command.CommandSet
 import moe.tachyon.dataDir
-import moe.tachyon.logger.SubQuizLogger.nativeOut
+import moe.tachyon.logger.MyDeepSeekLogger.nativeOut
 import moe.tachyon.utils.Power
 import kotlinx.coroutines.runBlocking
 import org.jline.reader.LineReader

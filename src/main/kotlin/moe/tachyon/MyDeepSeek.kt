@@ -2,7 +2,7 @@ package moe.tachyon
 
 import moe.tachyon.console.command.CommandSet.startCommandThread
 import moe.tachyon.database.SqlDatabase
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.plugin.apiDocs.installApiDoc
 import moe.tachyon.plugin.authentication.installAuthentication
 import moe.tachyon.plugin.autoHead.installAutoHead
@@ -86,7 +86,7 @@ fun main(args: Array<String>)
             ?.readAllBytes()
             ?.let(configFile::writeBytes)
         ?: error("default_config.yaml not found")
-        SubQuizLogger.getLogger().severe(
+        MyDeepSeekLogger.getLogger().severe(
             "config.yaml not found, the default config has been created, " +
             "please modify it and restart the program"
         )
@@ -117,7 +117,7 @@ fun Application.init()
 {
     version = environment.config.property("version").getString()
 
-    if (debug) SubQuizLogger.globalLogger.warning("Debug mode is enabled")
+    if (debug) MyDeepSeekLogger.globalLogger.warning("Debug mode is enabled")
 
     startCommandThread()
 

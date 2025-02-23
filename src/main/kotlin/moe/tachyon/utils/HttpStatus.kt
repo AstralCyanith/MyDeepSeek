@@ -1,6 +1,6 @@
 package moe.tachyon.utils
 
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.route.utils.example
 import io.github.smiley4.ktorswaggerui.dsl.routes.OpenApiResponse
 import io.github.smiley4.ktorswaggerui.dsl.routes.OpenApiResponses
@@ -33,7 +33,7 @@ data class HttpStatus(val code: HttpStatusCode, val message: String, val subStat
         // 用户名格式错误 400
         val UsernameFormatError = HttpStatus(HttpStatusCode.BadRequest, "用户名格式错误")
         // 操作需要登陆, 未登陆 401
-        val NotLoggedIn = HttpStatus(HttpStatusCode.Unauthorized, "未登录, 请先登录")
+        val NotLogin = HttpStatus(HttpStatusCode.Unauthorized, "未登录, 请先登录")
         // JWT Token 无效 401
         val InvalidToken = HttpStatus(HttpStatusCode.Unauthorized, "Token无效, 请重新登录")
         // OAuth code 无效 400
@@ -42,8 +42,8 @@ data class HttpStatus(val code: HttpStatusCode, val message: String, val subStat
         val Unauthorized = HttpStatus(HttpStatusCode.Unauthorized, "未授权")
         // 密码错误 401
         val PasswordError = HttpStatus(HttpStatusCode.Unauthorized, "账户或密码错误")
-        // 无法创建用户, 邮箱已被注册 406
-        val EmailExist = HttpStatus(HttpStatusCode.NotAcceptable, "邮箱已被注册")
+        // 无法创建用户, 用户名已被注册 406
+        val UsernameExist = HttpStatus(HttpStatusCode.NotAcceptable, "用户名已被注册")
         // 不在白名单中 401
         val NotInWhitelist = HttpStatus(HttpStatusCode.Unauthorized, "不在白名单中, 请确认邮箱或联系管理员")
         // 账户不存在 404
@@ -108,7 +108,7 @@ fun OpenApiResponses.statuses(vararg statuses: HttpStatus, @Language("Markdown")
 {
     @Suppress("UNCHECKED_CAST")
     val response = this@statuses.getField("responses") as Map<String, OpenApiResponse>
-    val logger = SubQuizLogger.getLogger()
+    val logger = MyDeepSeekLogger.getLogger()
 
     statuses.forEach {
         if ("${it.code.value}/${it.subStatus}" in response) logger.warning("重复定义HTTP状态码: ${it.code.value}/${it.subStatus}", IllegalStateException())
@@ -140,7 +140,7 @@ inline fun <reified T: Any> OpenApiResponses.statuses(
 {
     @Suppress("UNCHECKED_CAST")
     val response = this@statuses.getField("responses") as Map<String, OpenApiResponse>
-    val logger = SubQuizLogger.getLogger()
+    val logger = MyDeepSeekLogger.getLogger()
 
     statuses.forEach {
         if ("${it.code.value}/${it.subStatus}" in response) logger.warning("重复定义HTTP状态码: ${it.code.value}/${it.subStatus}", IllegalStateException())

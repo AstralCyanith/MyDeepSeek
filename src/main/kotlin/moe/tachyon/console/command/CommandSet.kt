@@ -4,7 +4,7 @@ import moe.tachyon.console.AnsiStyle.Companion.RESET
 import moe.tachyon.console.AnsiStyle.Companion.ansi
 import moe.tachyon.console.Console
 import moe.tachyon.console.SimpleAnsiColor
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.utils.Power.shutdown
 import io.ktor.server.application.*
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +28,7 @@ object CommandSet: TreeCommand(
     TestDatabase
 )
 {
-    private val logger = SubQuizLogger.getLogger()
+    private val logger = MyDeepSeekLogger.getLogger()
 
     /**
      * 上一次命令是否成功

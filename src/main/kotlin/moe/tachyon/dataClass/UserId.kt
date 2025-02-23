@@ -5,7 +5,6 @@ import kotlin.let
 import kotlin.text.toInt
 import kotlin.text.toIntOrNull
 
-@Suppress("unused")
 @JvmInline
 @Serializable
 value class UserId(val value: Int): Comparable<UserId>

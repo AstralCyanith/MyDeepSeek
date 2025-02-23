@@ -5,7 +5,7 @@ import kotlinx.serialization.serializer
 import net.mamoe.yamlkt.Yaml
 import net.mamoe.yamlkt.YamlElement
 import net.mamoe.yamlkt.YamlMap
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.workDir
 import java.io.File
 import java.lang.ref.WeakReference
@@ -63,13 +63,14 @@ class ConfigLoader<T: Any> private constructor(
     @Suppress("unused", "MemberVisibilityCanBePrivate")
     companion object
     {
-        private val logger by lazy { SubQuizLogger.getLogger() }
+        private val logger by lazy { MyDeepSeekLogger.getLogger() }
         fun init() // 初始化所有配置
         {
             listOf(
                 ::apiDocsConfig,
                 ::loggerConfig,
-                TODO("注册所有配置文件")
+                ::systemConfig
+                // TODO 注册其他配置
             ).forEach {
                 it.isAccessible = true
                 (it.getDelegate() as ConfigLoader<*>).reload()

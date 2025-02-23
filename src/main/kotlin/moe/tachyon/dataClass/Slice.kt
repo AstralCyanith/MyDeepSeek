@@ -2,7 +2,7 @@
 
 package moe.tachyon.dataClass
 import moe.tachyon.dataClass.Slice.Companion.asSlice
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import kotlinx.serialization.Serializable
 import kotlin.collections.asSequence
 import kotlin.collections.map
@@ -33,7 +33,7 @@ data class Slice<T>(
     @Suppress("unused")
     companion object
     {
-        val logger = SubQuizLogger.getLogger()
+        val logger = MyDeepSeekLogger.getLogger()
         /**
          * 生成一个空切片
          */

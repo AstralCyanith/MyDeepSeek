@@ -7,6 +7,11 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import moe.tachyon.dataClass.Permission
+import moe.tachyon.route.utils.finishCall
+import moe.tachyon.utils.HttpStatus
+import moe.tachyon.dataClass.UserFull
+import moe.tachyon.route.terminal.terminal
 
 fun Application.router() = routing()
 {
@@ -36,10 +41,13 @@ fun Application.router() = routing()
         install(createRouteScopedPlugin("ProhibitPlugin", { })
         {
             onCall {
-                // todo check the user whether was banned or not
+                val permission =  it.principal<UserFull>()?.permission ?: return@onCall
+                if (permission < Permission.NORMAL) finishCall(HttpStatus.Prohibit)
             }
         })
-        
-        // todo the routes which need to be authenticated
+
+        basic()
+        info()
+        terminal()
     }
 }

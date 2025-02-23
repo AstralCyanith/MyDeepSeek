@@ -5,7 +5,7 @@ import moe.tachyon.console.SimpleAnsiColor.Companion.CYAN
 import moe.tachyon.console.SimpleAnsiColor.Companion.GREEN
 import moe.tachyon.console.SimpleAnsiColor.Companion.RED
 import moe.tachyon.dataClass.*
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.utils.Power.shutdown
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -16,13 +16,13 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.postgresql.Driver
+import org.koin.core.component.get
+import org.koin.core.module.dsl.singleOf
 
 /**
  * @param T 表类型
@@ -53,7 +53,7 @@ object SqlDatabase: KoinComponent
      * 数据库
      */
     private lateinit var config: ApplicationConfig
-    private val logger = SubQuizLogger.getLogger()
+    private val logger = MyDeepSeekLogger.getLogger()
     private val drivers:List<Driver> = listOf(
         Driver(),
     )
@@ -127,7 +127,8 @@ object SqlDatabase: KoinComponent
 
             single { Database.connect(createHikariDataSource(url, driver, user, password)) }.bind<Database>()
 
-            TODO("注册所有表")
+            // TODO 注册所有表
+            singleOf(::Users)
         }
         getKoin().loadModules(listOf(module))
 
@@ -136,7 +137,8 @@ object SqlDatabase: KoinComponent
             logger.info("${CYAN}Using database implementation: ${RED}sql${CYAN}, and ${RED}lazyInit${CYAN} is ${GREEN}false.")
             logger.info("${CYAN}It may take a while to initialize the database. Please wait patiently.")
 
-            TODO("初始化所有表")
+            // TODO 注册所有表
+            get<Users>().table
         }
     }
 }
@@ -167,3 +169,7 @@ abstract class WrapColumnType<Base: Any, T: Any>(
 // UserId
 class UserIdColumnType: WrapColumnType<Int, UserId>(IntegerColumnType(), ::UserId, UserId::value)
 fun Table.userId(name: String) = registerColumn(name, UserIdColumnType())
+
+// ChatHistoryId
+class ChatHistoryIdColumnType: WrapColumnType<Long, ChatHistoryId>(LongColumnType(), ::ChatHistoryId, ChatHistoryId::value)
+fun Table.chatHistoryId(name: String) = registerColumn(name, ChatHistoryIdColumnType())

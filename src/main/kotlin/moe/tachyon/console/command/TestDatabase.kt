@@ -2,13 +2,13 @@ package moe.tachyon.console.command
 
 import moe.tachyon.console.SimpleAnsiColor.Companion.RED
 import moe.tachyon.console.command.TestDatabase.toStr
-import moe.tachyon.database.*
 import moe.tachyon.debug
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.plugin.contentNegotiation.contentNegotiationJson
 import moe.tachyon.plugin.contentNegotiation.showJson
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
+import moe.tachyon.database.Users
 import org.jline.reader.Candidate
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -22,7 +22,7 @@ import kotlin.reflect.full.memberFunctions
 
 object TestDatabase: Command, KoinComponent
 {
-    private val logger = SubQuizLogger.getLogger<TestDatabase>()
+    private val logger = MyDeepSeekLogger.getLogger<TestDatabase>()
     override val description: String = "Call the database interface. ${RED.bright()}This command is for debugging only."
     override val args: String = "<table> <method> [args]..."
     override val aliases: List<String> = listOf("database", "db")
@@ -32,7 +32,8 @@ object TestDatabase: Command, KoinComponent
     private val database: Map<String, Pair<Any, KClass<*>>> by lazy()
     {
         mapOf(
-            TODO("注册所有表，例如：\"User\" to dao<User>()")
+            // TODO 注册所有表，例如：\"User\" to dao<User>()
+            "User" to dao<Users>(),
         )
     }
 

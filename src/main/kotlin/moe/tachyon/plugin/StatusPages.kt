@@ -7,7 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
-import moe.tachyon.logger.SubQuizLogger
+import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.plugin.rateLimit.RateLimit
 import moe.tachyon.route.utils.CallFinish
 import moe.tachyon.utils.HttpStatus
@@ -22,7 +22,7 @@ private fun ApplicationCall.hasResponseBody() =
  */
 fun Application.installStatusPages() = install(StatusPages)
 {
-    val logger = SubQuizLogger.getLogger()
+    val logger = MyDeepSeekLogger.getLogger()
 
     exception<CallFinish> { call, finish ->
         logger.finest("CallFinish in ${call.request.path()}", finish)
