@@ -16,7 +16,7 @@ fun Route.chat() = route("/chat",{
     tags = listOf("对话")
 })
 {
-    post("/", {
+    post({
         description = "对话,模型参数仅管理员可设置"
         request {
             body<ChatData>()

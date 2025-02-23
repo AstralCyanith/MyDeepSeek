@@ -3,6 +3,7 @@ package moe.tachyon.database
 import kotlinx.serialization.json.JsonElement
 import moe.tachyon.dataClass.ChatHistory
 import moe.tachyon.dataClass.ChatHistoryId
+import moe.tachyon.dataClass.Message
 import moe.tachyon.dataClass.Slice
 import moe.tachyon.dataClass.UserId
 import moe.tachyon.database.utils.*
@@ -24,8 +25,8 @@ class ChatHistories: SqlDao<ChatHistories.ChatHistoryTable>(ChatHistoryTable)
     object ChatHistoryTable: IdTable<ChatHistoryId>("chat_history")
     {
         override val id = chatHistoryId("id").autoIncrement().entityId()
-        val user = reference("owner", Users.UserTable)
-        val content = jsonb<JsonElement>("content", dataJson)
+        val user = reference("user", Users.UserTable).index()
+        val content = jsonb<List<Message>>("content", dataJson)
         val time = timestampWithTimeZone("time").defaultExpression(CurrentTimestampWithTimeZone)
         override val primaryKey = PrimaryKey(id)
     }
@@ -37,7 +38,7 @@ class ChatHistories: SqlDao<ChatHistories.ChatHistoryTable>(ChatHistoryTable)
         time = row[ChatHistoryTable.time].toInstant().toEpochMilli(),
     )
 
-    suspend fun insertChatHistory( user: UserId, content: JsonElement): ChatHistoryId = query()
+    suspend fun insertChatHistory( user: UserId, content: List<Message>): ChatHistoryId = query()
     {
         insertAndGetId {
             it[ChatHistoryTable.user] = user
