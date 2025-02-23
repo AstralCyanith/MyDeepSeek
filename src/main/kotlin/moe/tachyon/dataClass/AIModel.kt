@@ -66,7 +66,7 @@ enum class AIModel(private val modelName: String) {
 }
 
 @Serializable
-data class ModelConfig(
+data class DefaultModelConfig(
     val temperature: Double,
     val top_p: Double,
     val top_k: Int,
@@ -76,6 +76,6 @@ data class ModelConfig(
 )
 {
     companion object {
-        val example get() = ModelConfig(0.7, 0.95, 50, 0.0, emptyList(), emptyList())
+        val example get() = DefaultModelConfig(0.7, 0.95, 50, 0.0, emptyList(), emptyList())
     }
 }

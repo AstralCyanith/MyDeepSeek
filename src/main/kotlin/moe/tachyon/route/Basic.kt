@@ -15,7 +15,7 @@ fun Route.basic() = route("/auth",{
     tags = listOf("账户")
 }) {
     post("/register", {
-        description = "注册, 若成功返回token"
+        description = "注册, 若成功返回token, 需要ROOT权限"
         request {
             body<RegisterInfo>
             {
@@ -27,6 +27,8 @@ fun Route.basic() = route("/auth",{
         this.response {
             statuses<JWTAuth.Token>(HttpStatus.OK, example = JWTAuth.Token("token"))
             statuses(
+                HttpStatus.NotLogin,
+                HttpStatus.Forbidden,
                 HttpStatus.UsernameExist,
                 HttpStatus.UsernameFormatError,
                 HttpStatus.PasswordFormatError,
@@ -85,7 +87,10 @@ private val registerLocks = Locks<String>()
 
 private suspend fun Context.register()
 {
+    val user = getLoginUser() ?: finishCall(HttpStatus.NotLogin)
+    if(user.permission < Permission.ROOT) finishCall(HttpStatus.Forbidden)
     val registerInfo: RegisterInfo = call.receive()
+
     //检查用户名是否合法
     checkUserInfo(registerInfo.username, registerInfo.password).apply {
         if (this != HttpStatus.OK) finishCall(this)
