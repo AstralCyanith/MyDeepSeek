@@ -5,18 +5,19 @@ package moe.tachyon.plugin.authentication
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.response.*
 import moe.tachyon.JWTAuth
+import moe.tachyon.JWTAuth.initJwtAuth
 import moe.tachyon.config.apiDocsConfig
-import moe.tachyon.logger.MyDeepSeekLogger
 import moe.tachyon.utils.HttpStatus
+import moe.tachyon.utils.respond
 
 /**
  * 安装登陆验证服务
  */
 fun Application.installAuthentication() = install(Authentication)
 {
-    val logger = MyDeepSeekLogger.getLogger()
+    this@installAuthentication.initJwtAuth()
+
     // 此登陆仅用于api文档的访问, 见ApiDocs插件
     basic("auth-api-docs")
     {

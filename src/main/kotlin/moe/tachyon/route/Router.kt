@@ -49,5 +49,6 @@ fun Application.router() = routing()
         basic()
         info()
         terminal()
+        chat()
     }
 }
