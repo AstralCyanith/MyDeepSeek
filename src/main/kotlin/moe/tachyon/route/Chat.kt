@@ -34,7 +34,6 @@ fun Route.chat() = route("/chat",{
                 example("example", ChatData(listOf(
                     Message(Role.SYSTEM, "You are a AI assistant"),
                     Message(Role.USER, "Hello"),
-                    Message(Role.ASSISTANT, "Hi"),
                 ),AIModel.DEEPSEEK_R1,null, ChatParameter(0.7, 0.95, 50, 0.0)))
             }
         }

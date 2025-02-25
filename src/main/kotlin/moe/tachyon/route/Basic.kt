@@ -31,8 +31,8 @@ fun Route.basic() = route("/auth",{
                 HttpStatus.Forbidden,
                 HttpStatus.UsernameExist,
                 HttpStatus.UsernameFormatError,
-                HttpStatus.PasswordFormatError,
-                HttpStatus.NotInWhitelist
+                HttpStatus.PasswordFormatError.subStatus(code = 1),
+                HttpStatus.NotInWhitelist.subStatus(code = 2)
             )
         }
     }) { register() }
@@ -70,7 +70,7 @@ fun Route.basic() = route("/auth",{
             statuses<JWTAuth.Token>(HttpStatus.OK, example = JWTAuth.Token("token"))
             statuses(
                 HttpStatus.NotLogin,
-                HttpStatus.PasswordError,
+                HttpStatus.PasswordError.subStatus(code = 1),
                 HttpStatus.PasswordFormatError,
             )
         }
